@@ -1,0 +1,44 @@
+{
+    "name": "scullwm/dbip-client",
+    "description": "",
+    "homepage": "https://github.com/scullwm/dbip-client",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thomas P",
+            "email": "thomas@scullwm.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "php-http/discovery": "^1.14",
+        "php-http/httplug": "^2.2",
+        "php-http/message-factory": "^1.0",
+        "psr/http-client": "^1.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "nyholm/psr7": "^1.4",
+        "php-http/message": "^1.12",
+        "php-http/mock-client": "^1.5",
+        "phpunit/phpunit": "^9.5"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Scullwm\\DbIpClient\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Scullwm\\DbIpClient\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    }
+}
