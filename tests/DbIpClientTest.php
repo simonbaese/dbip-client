@@ -58,6 +58,37 @@ final class DbIpClientTest extends TestCase
         $this->assertEquals($ipDetails->getIsp(), 'AT&T Services');
     }
 
+    public function testApiStatus()
+    {
+        $client = new Client();
+
+        $response = $this->getResponse(file_get_contents(__DIR__ . '/Fixtures/status.json'));
+        $client->setDefaultResponse($response);
+        $dbipClient = new TestedClient('d74be40a1acd2b5b356f67a0f6a5e1be', $client);
+
+        $apiStatus = $dbipClient->getApiStatus();
+
+        $this->assertEquals($apiStatus->getApiKey(), 'd74be40a1acd2b5b356f67a0f6a5e1be');
+        $this->assertEquals($apiStatus->getQueriesPerDay(), 10000);
+        $this->assertEquals($apiStatus->getQueriesLeft(), 9986);
+        $this->assertEquals($apiStatus->getStatus(), 'active');
+    }
+
+    public function testFreeApiStatus()
+    {
+        $client = new Client();
+
+        $response = $this->getResponse(file_get_contents(__DIR__ . '/Fixtures/status_free.json'));
+        $client->setDefaultResponse($response);
+        $dbipClient = new TestedClient('free', $client);
+
+        $apiStatus = $dbipClient->getApiStatus();
+
+        $this->assertEquals($apiStatus->getApiKey(), 'free');
+        $this->assertEquals($apiStatus->getQueriesPerDay(), 0);
+        $this->assertEquals($apiStatus->getQueriesLeft(), 969);
+        $this->assertEquals($apiStatus->getStatus(), 'unknow');
+    }
 
     private function getResponse(string $content, int $statusCode = 200): ResponseInterface
     {

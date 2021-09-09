@@ -3,6 +3,7 @@
 namespace Scullwm\DbIpClient;
 
 use Http\Client\HttpClient;
+use Scullwm\DbIpClient\ApiStatus;
 use Scullwm\DbIpClient\IpDetails;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
@@ -21,7 +22,8 @@ class Client
 
     private string $token;
 
-    private const API_ENDPOINT_V2 = 'http://api.db-ip.com/v2/%s/%s';
+    private const API_ENDPOINT_V2_IP_DETAILS = 'http://api.db-ip.com/v2/%s/%s';
+    private const API_ENDPOINT_V2_API_STATUS = 'http://api.db-ip.com/v2/%s';
 
     public function __construct(string $token, ClientInterface $client = null, RequestFactoryInterface $factory = null)
     {
@@ -30,14 +32,21 @@ class Client
         $this->messageFactory = $factory ?: Psr17FactoryDiscovery::findRequestFactory();
     }
 
-    public function getIpDetails(string $ip)
+    public function getIpDetails(string $ip): IpDetails
     {
-        $request = $this->getRequest(sprintf(self::API_ENDPOINT_V2, $this->token, $ip));
+        $request = $this->getRequest(sprintf(self::API_ENDPOINT_V2_IP_DETAILS, $this->token, $ip));
 
-        return $this->getParsedResponse($request);
+        return IpDetails::new($this->getParsedResponse($request));
     }
 
-    protected function getParsedResponse(RequestInterface $request): IpDetails
+    public function getApiStatus(): ApiStatus
+    {
+        $request = $this->getRequest(sprintf(self::API_ENDPOINT_V2_API_STATUS, $this->token));
+
+        return ApiStatus::new($this->getParsedResponse($request), $this->token);
+    }
+
+    protected function getParsedResponse(RequestInterface $request): array
     {
         $response = $this->getHttpClient()->sendRequest($request);
 
@@ -59,7 +68,7 @@ class Client
             throw InvalidServerResponseException::invalidJson((string) $request->getUri(), $body);
         }
 
-        return IpDetails::new($content);
+        return $content;
     }
 
     protected function getRequest(string $url): RequestInterface

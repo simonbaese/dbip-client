@@ -91,7 +91,7 @@ class IpDetails
 
     public function isEuMember(): bool
     {
-        return $this->isEuMember();
+        return $this->isEuMember;
     }
 
     public function getStateProv(): string
