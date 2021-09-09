@@ -16,9 +16,12 @@ First of all, you need to define an add the API client in your project.
 
 
 ```php
-        $dbipClient = new Client('my_secret_token');
-        $ipDetails = $dbipClient->getIpDetails('8.8.8.8');
-        $ipDetails->isRisky(); // false
+    $dbipClient = new Client('my_secret_token');
+    $ipDetails = $dbipClient->getIpDetails('8.8.8.8');
+    $ipDetails->isRisky(); // false
+
+    $apiStatus = $dbipClient->getApiStatus();
+    echo $apiStatus->getQueriesLeft(); // 9996
 ```
 
 ### Running the Test Suite
