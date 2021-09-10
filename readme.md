@@ -20,8 +20,8 @@ First of all, you need to define an add the API client in your project.
     $ipDetails = $dbipClient->getIpDetails('8.8.8.8');
     $ipDetails->isRisky(); // false
 
-    $apiStatus = $dbipClient->getApiStatus();
-    echo $apiStatus->getQueriesLeft(); // 9996
+    $apiThrottling = $dbipClient->getApiThrottling();
+    echo $apiThrottling->getQueriesLeft(); // 9996
 ```
 
 ### Running the Test Suite
