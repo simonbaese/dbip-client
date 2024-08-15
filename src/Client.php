@@ -14,7 +14,6 @@ use Scullwm\DbIpClient\Exception\InvalidCredentials;
 use Scullwm\DbIpClient\Exception\InvalidServerResponse;
 use Scullwm\DbIpClient\Exception\QuotaExceeded;
 use Throwable;
-use Webmozart\Assert\Assert;
 
 use function json_decode;
 use function sprintf;
@@ -72,11 +71,6 @@ final class Client
         }
 
         $body = (string) $response->getBody();
-
-        Assert::stringNotEmpty(
-            $body,
-            sprintf('The server returned an empty response for query "%s".', $request->getUri())
-        );
 
         try {
             $content = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
